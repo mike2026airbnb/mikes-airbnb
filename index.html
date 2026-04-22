@@ -184,10 +184,16 @@ nav a {
   margin: 40px 0;
   padding: 80px 20px;
 }*/
-    #booking {
+   #booking {
   position: relative;
-  background: url('images/background1.png') center/cover no-repeat;
-  padding: 80px 20px;
+  height: 100vh; /* FULL SCREEN */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+              url('images/background1.png') center/cover no-repeat;
 }
     #booking::before {
   content: "";
