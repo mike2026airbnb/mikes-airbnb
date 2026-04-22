@@ -317,12 +317,21 @@ document.getElementById("bookingForm").addEventListener("submit", async function
     checkout: document.getElementById("checkout").value
   };
 
-  await fetch("https://script.google.com/macros/s/AKfycbwQCDRd753r8SNo0px6ZQKVJ0Ij4966JnGzKeMrk4SDRiWoBHrfAX19jb0pqlESoj6UfA/exec", {
-    method: "POST",
-    body: JSON.stringify(data)
-  });
+  const response = await fetch("https://script.google.com/macros/s/AKfycbwQCDRd753r8SNo0px6ZQKVJ0Ij4966JnGzKeMrk4SDRiWoBHrfAX19jb0pqlESoj6UfA/exec", {
+  method: "POST",
+  body: JSON.stringify(data)
+});
 
-  alert("Booking request sent!");
+const result = await response.text();
+
+if (result === "success")
+{
+  alert("Booking confirmed! Check your email.");
+  document.getElementById("bookingForm").reset();
+} 
+else {
+  alert("Sorry, those dates are already booked.");
+}
 });
 
 initCalendar();
