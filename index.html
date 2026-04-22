@@ -134,54 +134,40 @@
       margin-bottom: 10px;
     }
 
+    
     /* BOOKING */
     
-<section id="booking">
-  <h2>Book Your Stay</h2>
-  <div class="booking-form">
-    <form id="bookingForm">
-      <input type="text" id="name" placeholder="Your Name" required>
-      <input type="email" id="email" placeholder="Your Email" required>
-
-      <input type="text" id="checkin" placeholder="Check-in Date" required>
-      <input type="text" id="checkout" placeholder="Check-out Date" required>
-
-      <button type="submit">Book Now</button>
-    </form>
-  </div>
-</section>
-    
-    #booking {
+#booking {
   background: #786060;
   max-width: 100%;
   margin: 40px 0;
   padding: 80px 20px;
 }
-  .booking-form {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      max-width: 500px;
-      margin: auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    }
 
-    input, button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
+.booking-form {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 500px;
+  margin: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
 
-    button {
-      background: #333;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }     
+input, button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
 
+button {
+  background: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
     /* TESTIMONIALS */
     .testimonials {
       text-align: center;
@@ -243,9 +229,20 @@
   </div>
 </section>
 
-<section id="booking">
+  <section id="booking">
   <h2>Book Your Stay</h2>
   <div class="booking-form">
+    <form id="bookingForm">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+
+      <input type="text" id="checkin" placeholder="Check-in Date" required>
+      <input type="text" id="checkout" placeholder="Check-out Date" required>
+
+      <button type="submit">Book Now</button>
+    </form>
+  </div>
+</section>
 
 <section class="testimonials">
   <h2>What Guests Say</h2>
