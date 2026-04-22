@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mike's Airbnb</title>
@@ -140,7 +142,7 @@
   margin: 40px 0;
   padding: 80px 20px;
 }
-   .booking-form {
+  /* .booking-form {
       background: white;
       padding: 30px;
       border-radius: 15px;
@@ -163,7 +165,21 @@
       color: white;
       border: none;
       cursor: pointer;
-    }
+    } */
+    <section id="booking">
+  <h2>Book Your Stay</h2>
+  <div class="booking-form">
+    <form id="bookingForm">
+      <input type="text" id="name" placeholder="Your Name" required>
+      <input type="email" id="email" placeholder="Your Email" required>
+
+      <input type="text" id="checkin" placeholder="Check-in Date" required>
+      <input type="text" id="checkout" placeholder="Check-out Date" required>
+
+      <button type="submit">Book Now</button>
+    </form>
+  </div>
+</section>
     
 
     /* TESTIMONIALS */
@@ -247,6 +263,7 @@
 </footer>
 
 <script>
+// --- FETCH BOOKED DATES FROM GOOGLE CALENDAR ---
 async function getBookedDates() {
   const url = "https://api.allorigins.win/raw?url=https://calendar.google.com/calendar/ical/mikesaccommodations%40gmail.com/public/basic.ics";
 
@@ -261,19 +278,17 @@ async function getBookedDates() {
 
   lines.forEach(line => {
     if (line.startsWith("DTSTART")) {
-      const date = line.split(":")[1].trim();
-      start = new Date(date.substring(0,4), date.substring(4,6)-1, date.substring(6,8));
+      const d = line.split(":")[1].trim();
+      start = new Date(d.substring(0,4), d.substring(4,6)-1, d.substring(6,8));
     }
 
     if (line.startsWith("DTEND")) {
-      const date = line.split(":")[1].trim();
-      end = new Date(date.substring(0,4), date.substring(4,6)-1, date.substring(6,8));
+      const d = line.split(":")[1].trim();
+      end = new Date(d.substring(0,4), d.substring(4,6)-1, d.substring(6,8));
 
-      // Add ALL dates between start and end
       let current = new Date(start);
       while (current < end) {
-        const formatted = current.toISOString().split("T")[0];
-        dates.push(formatted);
+        dates.push(current.toISOString().split("T")[0]);
         current.setDate(current.getDate() + 1);
       }
     }
@@ -282,6 +297,7 @@ async function getBookedDates() {
   return dates;
 }
 
+// --- INIT DATE PICKERS ---
 async function initCalendar() {
   const bookedDates = await getBookedDates();
 
@@ -297,6 +313,25 @@ async function initCalendar() {
     disable: bookedDates
   });
 }
+
+// --- SEND DATA TO GOOGLE APPS SCRIPT ---
+document.getElementById("bookingForm").addEventListener("submit", async function(e) {
+  e.preventDefault();
+
+  const data = {
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    checkin: document.getElementById("checkin").value,
+    checkout: document.getElementById("checkout").value
+  };
+
+  await fetch("PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE", {
+    method: "POST",
+    body: JSON.stringify(data)
+  });
+
+  alert("Booking request sent!");
+});
 
 initCalendar();
 </script>
