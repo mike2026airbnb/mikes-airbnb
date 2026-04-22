@@ -11,6 +11,31 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
   
   <style>
+
+    
+  .bg-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+
+  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+              url('images/background1.png') center/cover no-repeat;
+}
+  .bg-image {
+  animation: slowZoom 30s ease-in-out infinite alternate;
+}
+
+@keyframes slowZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
     :root {
   --deep-teal: #0f4c5c;
   --warm-sand: #f4e9dc;
@@ -40,9 +65,9 @@
 }
 
 body {
-  background: #cc9691; /* FULL PAGE COLOR */
-  color: var(--charcoal);
   margin: 0;
+  font-family: 'Poppins', sans-serif;
+  color: white;
 }
    /* body {
       margin: 0;
@@ -185,15 +210,8 @@ nav a {
   padding: 80px 20px;
 }*/
    #booking {
-  position: relative;
-  height: 100vh; /* FULL SCREEN */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
-              url('images/background1.png') center/cover no-repeat;
+  padding: 100px 20px;
+  text-align: center;
 }
     #booking {
   padding-top: 80px;
@@ -211,12 +229,8 @@ nav a {
 
 .booking-form {
   background: rgba(255, 255, 255, 0.95);
-  padding: 40px;
+  backdrop-filter: blur(8px);
   border-radius: 20px;
-  max-width: 500px;
-  margin: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
-  backdrop-filter: blur(5px);
 }
     #booking h2,
 #booking p {
@@ -279,6 +293,7 @@ button:hover {
   </style>
 </head>
 <body>
+  <div class="bg-image"></div>
 
 <nav>
   <a href="#">Home</a>
