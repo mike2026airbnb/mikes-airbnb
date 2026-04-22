@@ -325,7 +325,7 @@ document.getElementById("bookingForm").addEventListener("submit", async function
     checkout: document.getElementById("checkout").value
   };
 
-  await fetch("PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE", {
+  await fetch("https://script.google.com/macros/s/AKfycbwQCDRd753r8SNo0px6ZQKVJ0Ij4966JnGzKeMrk4SDRiWoBHrfAX19jb0pqlESoj6UfA/exec", {
     method: "POST",
     body: JSON.stringify(data)
   });
