@@ -247,11 +247,58 @@
 </footer>
 
 <script>
-function handleBooking(event) {
-  event.preventDefault();
-  alert("Booking request sent! We will contact you soon.");
-}
-</script>
+async function getBookedDates() {
+  const url = "https://api.allorigins.win/raw?url=https://calendar.google.com/calendar/ical/mikesaccommodations%40gmail.com/public/basic.ics";
 
+  const response = await fetch(url);
+  const text = await response.text();
+
+  const dates = [];
+  const lines = text.split("\n");
+
+  let start = null;
+  let end = null;
+
+  lines.forEach(line => {
+    if (line.startsWith("DTSTART")) {
+      const date = line.split(":")[1].trim();
+      start = new Date(date.substring(0,4), date.substring(4,6)-1, date.substring(6,8));
+    }
+
+    if (line.startsWith("DTEND")) {
+      const date = line.split(":")[1].trim();
+      end = new Date(date.substring(0,4), date.substring(4,6)-1, date.substring(6,8));
+
+      // Add ALL dates between start and end
+      let current = new Date(start);
+      while (current < end) {
+        const formatted = current.toISOString().split("T")[0];
+        dates.push(formatted);
+        current.setDate(current.getDate() + 1);
+      }
+    }
+  });
+
+  return dates;
+}
+
+async function initCalendar() {
+  const bookedDates = await getBookedDates();
+
+  flatpickr("#checkin", {
+    minDate: "today",
+    dateFormat: "Y-m-d",
+    disable: bookedDates
+  });
+
+  flatpickr("#checkout", {
+    minDate: "today",
+    dateFormat: "Y-m-d",
+    disable: bookedDates
+  });
+}
+
+initCalendar();
+</script>
 </body>
 </html>
