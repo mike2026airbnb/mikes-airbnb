@@ -445,6 +445,10 @@ button:hover {
 </footer>
 
 <script>
+
+  let checkinPicker, checkoutPicker;
+let bookedDatesGlobal = [];
+  
 // --- FETCH BOOKED DATES FROM GOOGLE CALENDAR ---
 async function getBookedDates() {
   const url = "https://api.allorigins.win/raw?url=https://calendar.google.com/calendar/ical/mikesaccommodations%40gmail.com/public/basic.ics";
@@ -481,18 +485,76 @@ async function getBookedDates() {
 
 // --- INIT DATE PICKERS ---
 async function initCalendar() {
-  const bookedDates = await getBookedDates();
+  bookedDatesGlobal = await getBookedDates();
 
-  flatpickr("#checkin", {
+  checkinPicker = flatpickr("#checkin", {
     minDate: "today",
     dateFormat: "Y-m-d",
-    disable: bookedDates
+    disable: bookedDatesGlobal,
+    
+    onDayCreate: function(dObj, dStr, fp, dayElem) {
+  const date = dayElem.dateObj.toISOString().split("T")[0];
+
+  if (bookedDatesGlobal.includes(date)) {
+    dayElem.style.background = "#ff6b6b";
+    dayElem.style.color = "#fff";
+    dayElem.style.borderRadius = "50%";
+    dayElem.title = "Already booked";
+  }
+}
+
+    onChange: function(selectedDates, dateStr) {
+      if (!dateStr) return;
+
+      const checkinDate = new Date(dateStr);
+
+      // find next booked date AFTER checkin
+      let nextBlockedDate = null;
+
+      bookedDatesGlobal.forEach(d => {
+        const booked = new Date(d);
+        if (booked > checkinDate) {
+          if (!nextBlockedDate || booked < nextBlockedDate) {
+            nextBlockedDate = booked;
+          }
+        }
+      });
+
+      // minimum checkout = next day
+      let minCheckout = new Date(checkinDate);
+      minCheckout.setDate(minCheckout.getDate() + 1);
+
+      checkoutPicker.set("minDate", minCheckout);
+
+      // prevent overlap with bookings
+      if (nextBlockedDate) {
+        checkoutPicker.set("maxDate", nextBlockedDate);
+      } else {
+        checkoutPicker.set("maxDate", null);
+      }
+
+      checkoutPicker.clear();
+
+      // auto open checkout picker
+      setTimeout(() => checkoutPicker.open(), 200);
+    }
   });
 
-  flatpickr("#checkout", {
+  checkoutPicker = flatpickr("#checkout", {
     minDate: "today",
     dateFormat: "Y-m-d",
-    disable: bookedDates
+    disable: bookedDatesGlobal,
+      
+    onDayCreate: function(dObj, dStr, fp, dayElem) {
+  const date = dayElem.dateObj.toISOString().split("T")[0];
+
+  if (bookedDatesGlobal.includes(date)) {
+    dayElem.style.background = "#ff6b6b";
+    dayElem.style.color = "#fff";
+    dayElem.style.borderRadius = "50%";
+    dayElem.title = "Already booked";
+  }
+}
   });
 }
 
