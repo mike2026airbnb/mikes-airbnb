@@ -562,6 +562,11 @@ function calculatePrice() {
   document.getElementById("summaryTotal").innerText = `$${total}`;
 }
 
+  // trigger price + summary updates
+document.getElementById("checkin").addEventListener("change", calculatePrice);
+document.getElementById("checkout").addEventListener("change", calculatePrice);
+document.getElementById("guests").addEventListener("change", calculatePrice);
+
 </script>
 </body>
 </html>
