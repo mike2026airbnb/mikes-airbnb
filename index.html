@@ -414,6 +414,13 @@ button:hover {
   <button type="button" onclick="showPayment()">Confirm & Pay</button>
 </form>
     <div class="summary-box">
+  <h3>Your Stay</h3>
+
+  <div class="summary-row">
+    <span>Nights</span>
+    <span id="summaryNights">0</span>
+  </div>
+
       <div id="paymentSection" style="display:none;" class="summary-box">
 
   <h3>Bank Transfer Payment</h3>
@@ -434,12 +441,6 @@ button:hover {
   <button type="button" onclick="submitBooking()">I Have Paid</button>
 
 </div>
-  <h3>Your Stay</h3>
-
-  <div class="summary-row">
-    <span>Nights</span>
-    <span id="summaryNights">0</span>
-  </div>
 
   <div class="summary-row">
     <span>Base ($200/night)</span>
