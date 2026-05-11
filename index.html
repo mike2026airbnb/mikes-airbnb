@@ -320,26 +320,6 @@ button:hover {
   backdrop-filter: blur(8px);
   color: #333;
 }
-    <div id="paymentSection" style="display:none;" class="summary-box">
-
-  <h3>Bank Transfer Payment</h3>
-
-  <p><strong>Bank:</strong> BSP</p>
-  <p><strong>Account Name:</strong> Fridam Rentals</p>
-  <p><strong>Account Number:</strong> 2001660089</p>
-  <p><strong>BSP #:</strong> 039049</p>
-  <p><strong>Swift Code:</strong> BOSPWSWSXXX</p>
-
-  <p style="margin-top:15px;">
-    Please transfer the total amount shown above.<br>
-    Then upload proof of payment below, with Narration of AirbnbBooking
-  </p>
-
-  <input type="file" id="paymentProof" accept="image/*" required>
-
-  <button onclick="submitBooking()">I Have Paid</button>
-
-</div>
 
 .summary-box h3 {
   margin-bottom: 15px;
@@ -434,6 +414,26 @@ button:hover {
   <button type="button" onclick="showPayment()">Confirm & Pay</button>
 </form>
     <div class="summary-box">
+      <div id="paymentSection" style="display:none;" class="summary-box">
+
+  <h3>Bank Transfer Payment</h3>
+
+  <p><strong>Bank:</strong> BSP</p>
+  <p><strong>Account Name:</strong> Fridam Rentals</p>
+  <p><strong>Account Number:</strong> 2001660089</p>
+  <p><strong>BSP #:</strong> 039049</p>
+  <p><strong>Swift Code:</strong> BOSPWSWSXXX</p>
+
+  <p style="margin-top:15px;">
+    Please transfer the total amount shown above.<br>
+    Then upload proof of payment below.
+  </p>
+
+  <input type="file" id="paymentProof" accept="image/*">
+
+  <button type="button" onclick="submitBooking()">I Have Paid</button>
+
+</div>
   <h3>Your Stay</h3>
 
   <div class="summary-row">
@@ -640,6 +640,17 @@ function calculatePrice() {
   const baseTotal = nights * basePrice;
   const extraTotal = nights * extraPerNight;
   const total = baseTotal + extraTotal;
+  // OLD display
+  document.getElementById("priceDisplay").innerHTML =
+    `💰 ${nights} nights — Total: $${total}`;
+
+  // NEW summary box
+  document.getElementById("summaryNights").innerText = nights;
+  document.getElementById("summaryBase").innerText = `$${baseTotal}`;
+  document.getElementById("summaryExtra").innerText = `$${extraTotal}`;
+  document.getElementById("summaryTotal").innerText = `$${total}`;
+}
+
 
   function showPayment() {
   const total = document.getElementById("summaryTotal").innerText;
@@ -656,17 +667,6 @@ function calculatePrice() {
     behavior: "smooth"
   });
 }
-  // OLD display
-  document.getElementById("priceDisplay").innerHTML =
-    `💰 ${nights} nights — Total: $${total}`;
-
-  // NEW summary box
-  document.getElementById("summaryNights").innerText = nights;
-  document.getElementById("summaryBase").innerText = `$${baseTotal}`;
-  document.getElementById("summaryExtra").innerText = `$${extraTotal}`;
-  document.getElementById("summaryTotal").innerText = `$${total}`;
-}
-
   // trigger price + summary updates
 document.getElementById("checkin").addEventListener("change", calculatePrice);
 document.getElementById("checkout").addEventListener("change", calculatePrice);
