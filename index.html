@@ -213,6 +213,11 @@ nav a {
   position: relative;
   padding: 100px 20px;
   text-align: center;
+
+  background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+              url('images/background1.png') center/cover no-repeat;
+
+  background-attachment: fixed;
 }
 
 /* FULL overlay */
@@ -238,8 +243,11 @@ nav a {
   backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 40px;
-  max-width: 500px;
+  display: flex;
+  gap: 20px;
+  max-width: 900px;
   margin: auto;
+  align-items: flex-start;
   box-shadow: 0 25px 80px rgba(0,0,0,0.3);
 }
     #booking h2,
@@ -255,8 +263,8 @@ input {
   border-radius: 05px;
   border: 1px solid #ddd;
 }
-input, button {
-  width: 50%;
+input, select, button {
+  width: 100%;
   padding: 12px;
   margin: 10px 0;
   border-radius: 8px;
@@ -500,7 +508,7 @@ async function initCalendar() {
     dayElem.style.borderRadius = "50%";
     dayElem.title = "Already booked";
   }
-}
+},
 
     onChange: function(selectedDates, dateStr) {
       if (!dateStr) return;
