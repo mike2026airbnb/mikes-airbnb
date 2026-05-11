@@ -320,6 +320,26 @@ button:hover {
   backdrop-filter: blur(8px);
   color: #333;
 }
+    <div id="paymentSection" style="display:none;" class="summary-box">
+
+  <h3>Bank Transfer Payment</h3>
+
+  <p><strong>Bank:</strong> BSP</p>
+  <p><strong>Account Name:</strong> Fridam Rentals</p>
+  <p><strong>Account Number:</strong> 2001660089</p>
+  <p><strong>BSP #:</strong> 039049</p>
+  <p><strong>Swift Code:</strong> BOSPWSWSXXX</p>
+
+  <p style="margin-top:15px;">
+    Please transfer the total amount shown above.<br>
+    Then upload proof of payment below, with Narration of AirbnbBooking
+  </p>
+
+  <input type="file" id="paymentProof" accept="image/*" required>
+
+  <button onclick="submitBooking()">I Have Paid</button>
+
+</div>
 
 .summary-box h3 {
   margin-bottom: 15px;
@@ -411,7 +431,7 @@ button:hover {
     Total: $0
   </p>
 
-  <button type="submit">Book Now</button>
+  <button type="button" onclick="showPayment()">Confirm & Pay</button>
 </form>
     <div class="summary-box">
   <h3>Your Stay</h3>
@@ -565,38 +585,39 @@ async function initCalendar() {
   });
 }
 
-// --- SEND DATA TO GOOGLE APPS SCRIPT ---
-document.getElementById("bookingForm").addEventListener("submit", async function(e) {
-  e.preventDefault();
+async function submitBooking() {
+  const proof = document.getElementById("paymentProof").files[0];
 
-  const guests = document.getElementById("guests").value;
-const priceText = document.getElementById("priceDisplay").innerText;
+  if (!proof) {
+    alert("Please upload payment proof.");
+    return;
+  }
 
-const data = {
-  name: document.getElementById("name").value,
-  email: document.getElementById("email").value,
-  checkin: document.getElementById("checkin").value,
-  checkout: document.getElementById("checkout").value,
-  guests: guests,
-  total: priceText
-};
+  const formData = new FormData();
 
-  const response = await fetch("https://script.google.com/macros/s/AKfycbwQCDRd753r8SNo0px6ZQKVJ0Ij4966JnGzKeMrk4SDRiWoBHrfAX19jb0pqlESoj6UfA/exec", {
-  method: "POST",
-  body: JSON.stringify(data)
-});
+  formData.append("name", document.getElementById("name").value);
+  formData.append("email", document.getElementById("email").value);
+  formData.append("checkin", document.getElementById("checkin").value);
+  formData.append("checkout", document.getElementById("checkout").value);
+  formData.append("guests", document.getElementById("guests").value);
+  formData.append("total", document.getElementById("summaryTotal").innerText);
+  formData.append("proof", proof);
 
-const result = await response.text();
+  const response = await fetch("YOUR_GOOGLE_SCRIPT_URL", {
+    method: "POST",
+    body: formData
+  });
 
-if (result === "success")
-{
-  alert("Booking confirmed! Check your email.");
-  document.getElementById("bookingForm").reset();
-} 
-else {
-  alert("Sorry, those dates are already booked.");
+  const result = await response.text();
+
+  if (result === "success") {
+    alert("Payment received! Booking pending confirmation.");
+    document.getElementById("bookingForm").reset();
+    document.getElementById("paymentSection").style.display = "none";
+  } else {
+    alert("Error submitting booking.");
+  }
 }
-});
 
 initCalendar();
   // --- PRICE CALCULATION ---
@@ -620,6 +641,21 @@ function calculatePrice() {
   const extraTotal = nights * extraPerNight;
   const total = baseTotal + extraTotal;
 
+  function showPayment() {
+  const total = document.getElementById("summaryTotal").innerText;
+
+  if (total === "$0") {
+    alert("Please select valid dates first.");
+    return;
+  }
+
+  document.getElementById("paymentSection").style.display = "block";
+
+  // smooth scroll
+  document.getElementById("paymentSection").scrollIntoView({
+    behavior: "smooth"
+  });
+}
   // OLD display
   document.getElementById("priceDisplay").innerHTML =
     `💰 ${nights} nights — Total: $${total}`;
