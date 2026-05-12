@@ -112,6 +112,24 @@
       background: #ddd;
     }
 
+    .spinner {
+  width: 18px;
+  height: 18px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
     /* NAVBAR */
     nav {
   position: fixed;
@@ -456,7 +474,7 @@ button:hover {
 
   <input type="file" id="paymentProof" accept="image/*">
 
-  <button type="button" onclick="submitBooking(event)">I Have Paid</button>
+  <button type="button" onclick="submitBooking(event)" id="payBtn">   I Have Paid </button>
 
 </div>
 
@@ -588,15 +606,17 @@ async function initCalendar() {
 
 async function submitBooking(event) {
 
-  const btn = event.target;
-  btn.innerText = "Processing...";
-  btn.disabled = true;
+const btn = document.getElementById("payBtn");
 
+// show spinner
+btn.innerHTML = `<span class="spinner"></span> Processing...`;
+btn.disabled = true;
+  
   const proof = document.getElementById("paymentProof").files[0];
 
   if (!proof) {
     alert("Please upload payment proof.");
-    btn.innerText = "I Have Paid";
+    btn.innerHTML = "I Have Paid";
     btn.disabled = false;
     return;
   }
@@ -687,7 +707,6 @@ function showPayment() {
   document.getElementById("paymentSection").scrollIntoView({
     behavior: "smooth"
   });
-}
 
   document.getElementById("paymentSection").style.display = "block";
 
