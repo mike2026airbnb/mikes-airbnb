@@ -456,7 +456,7 @@ button:hover {
 
   <input type="file" id="paymentProof" accept="image/*">
 
-  <button type="button" onclick="submitBooking()">I Have Paid</button>
+  <button type="button" onclick="submitBooking(event)">I Have Paid</button>
 
 </div>
 
@@ -586,11 +586,18 @@ async function initCalendar() {
   });
 }
 
-async function submitBooking() {
+async function submitBooking(event) {
+
+  const btn = event.target;
+  btn.innerText = "Processing...";
+  btn.disabled = true;
+
   const proof = document.getElementById("paymentProof").files[0];
 
   if (!proof) {
     alert("Please upload payment proof.");
+    btn.innerText = "I Have Paid";
+    btn.disabled = false;
     return;
   }
 
@@ -604,22 +611,30 @@ async function submitBooking() {
   formData.append("total", document.getElementById("summaryTotal").innerText);
   formData.append("proof", proof);
 
-  const response = await fetch("https://script.google.com/macros/s/AKfycbzgstc4_mO3FBVI-iKUiIE0G5e4_opPRwV5pHU9YNxAuPTJDeWxnKZL2_Sh6ejFkUOu/exec", {
-    method: "POST",
-    body: formData
-  });
+  try {
+    const response = await fetch("https://script.google.com/macros/s/AKfycbzgstc4_mO3FBVI-iKUiIE0G5e4_opPRwV5pHU9YNxAuPTJDeWxnKZL2_Sh6ejFkUOu/exec", {
+      method: "POST",
+      body: formData
+    });
 
-  const result = await response.text();
+    const result = await response.text();
 
-  if (result === "success") {
-    alert("Payment received! Booking pending confirmation.");
-    document.getElementById("bookingForm").reset();
-    document.getElementById("paymentSection").style.display = "none";
-  } else {
-    alert("Error submitting booking.");
+    if (result === "success") {
+      alert("Payment received! Booking pending confirmation.");
+      document.getElementById("bookingForm").reset();
+      document.getElementById("paymentSection").style.display = "none";
+    } else {
+      alert("Error submitting booking.");
+    }
+
+  } catch (err) {
+    alert("Network error. Please try again.");
   }
-}
 
+  // 🔁 RESET BUTTON
+  btn.innerText = "I Have Paid";
+  btn.disabled = false;
+}
 initCalendar();
   // --- PRICE CALCULATION ---
 function calculatePrice() {
