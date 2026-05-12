@@ -637,9 +637,9 @@ btn.disabled = true;
       body: formData
     });
 
-    const result = await response.text();
+    const result = (await response.text()).trim();
 
-    if (result === "success") {
+     if (result === "success") {
       alert("Payment received! Booking pending confirmation.");
       document.getElementById("bookingForm").reset();
       document.getElementById("paymentSection").style.display = "none";
