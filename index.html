@@ -438,7 +438,8 @@ button:hover {
     <span id="summaryTotal">$0</span>
   </div>
 </div>
-     <div id="paymentSection" style="display:none;" class="summary-box">
+</div>
+    <div id="paymentSection" style="display:none;" class="summary-box">
 
   <h3>Bank Transfer Payment</h3>
 
@@ -458,7 +459,7 @@ button:hover {
   <button type="button" onclick="submitBooking()">I Have Paid</button>
 
 </div>
-  </div>
+
 </section>
 
 <section class="testimonials">
@@ -651,14 +652,27 @@ function calculatePrice() {
   document.getElementById("summaryTotal").innerText = `$${total}`;
 }
 
-
-  function showPayment() {
+function showPayment() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
   const total = document.getElementById("summaryTotal").innerText;
+
+  if (!name || !email) {
+    alert("Please fill in your name and email.");
+    return;
+  }
 
   if (total === "$0") {
     alert("Please select valid dates first.");
     return;
   }
+
+  document.getElementById("paymentSection").style.display = "block";
+
+  document.getElementById("paymentSection").scrollIntoView({
+    behavior: "smooth"
+  });
+}
 
   document.getElementById("paymentSection").style.display = "block";
 
