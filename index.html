@@ -643,13 +643,15 @@ btn.disabled = true;
       alert("Payment received! Booking pending confirmation.");
       document.getElementById("bookingForm").reset();
       document.getElementById("paymentSection").style.display = "none";
-    } else {
+      } 
+     else {
       alert("Error submitting booking.");
     }
 
-  } catch (err) {
-    alert("Network error. Please try again.");
-  }
+  catch (err) {
+  console.error(err);
+  alert("Error: " + err.message);
+}
 
   // 🔁 RESET BUTTON
   btn.innerText = "I Have Paid";
@@ -701,12 +703,6 @@ function showPayment() {
     alert("Please select valid dates first.");
     return;
   }
-
-  document.getElementById("paymentSection").style.display = "block";
-
-  document.getElementById("paymentSection").scrollIntoView({
-    behavior: "smooth"
-  });
 
   document.getElementById("paymentSection").style.display = "block";
 
