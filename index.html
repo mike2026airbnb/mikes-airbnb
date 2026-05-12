@@ -530,13 +530,33 @@ async function getBookedDates() {
 }
 
 // --- INIT DATE PICKERS ---
-async function initCalendar() {
-  bookedDatesGlobal = await getBookedDates();
+/*bookedDatesGlobal = [];
+  //bookedDatesGlobal = await getBookedDates();
 
   checkinPicker = flatpickr("#checkin", {
     minDate: "today",
     dateFormat: "Y-m-d",
-    disable: bookedDatesGlobal,
+    disable: bookedDatesGlobal, */
+  async function initCalendar() {
+  try {
+    bookedDatesGlobal = await getBookedDates();
+  } catch (e) {
+    console.warn("Calendar failed, continuing without blocked dates");
+    bookedDatesGlobal = [];
+  }
+
+  checkinPicker = flatpickr("#checkin", {
+    minDate: "today",
+    dateFormat: "Y-m-d",
+    disable: bookedDatesGlobal
+  });
+
+  checkoutPicker = flatpickr("#checkout", {
+    minDate: "today",
+    dateFormat: "Y-m-d",
+    disable: bookedDatesGlobal
+  });
+}
     
     onDayCreate: function(dObj, dStr, fp, dayElem) {
   const date = dayElem.dateObj.toISOString().split("T")[0];
