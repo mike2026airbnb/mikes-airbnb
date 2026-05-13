@@ -498,15 +498,17 @@ let bookedDatesGlobal = [];
    GET BOOKED DATES (ICS)
 ========================= */
 async function getBookedDates() {
-  const url = "https://script.google.com/macros/s/AKfycbxU4WM2L8vQ2yJm0OdMEjOMHbkF66-L6vpGeOFltGQvJIu34Y1W-vLkum81u-miW_FkDA/exec?action=booked";
+  try {
+    const url = "https://script.google.com/macros/s/AKfycbxU4WM2L8vQ2yJm0OdMEjOMHbkF66-L6vpGeOFltGQvJIu34Y1W-vLkum81u-miW_FkDA/exec?action=booked";
 
-  const response = await fetch(url);
-  const booked = await response.json();
+    const response = await fetch(url);
+    const data = await response.json();
 
-  return booked;
-}
-
-  return dates;
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.warn("Failed to load booked dates");
+    return [];
+  }
 }
 
 /* =========================
@@ -696,13 +698,13 @@ async function submitBooking(event) {
 /* =========================
    LIVE EVENT TRIGGERS
 ========================= */
-  window.addEventListener("load", () => {
+window.addEventListener("load", async () => {
+  await initCalendar();
+
   document.getElementById("checkin").addEventListener("change", calculatePrice);
   document.getElementById("checkout").addEventListener("change", calculatePrice);
   document.getElementById("guests").addEventListener("change", calculatePrice);
-});
-
-/* =========================
+});/* =========================
    START APP
 ========================= */
 window.addEventListener("load", initCalendar);
