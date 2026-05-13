@@ -696,22 +696,18 @@ async function submitBooking(event) {
 
   try {
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbxU4WM2L8vQ2yJm0OdMEjOMHbkF66-L6vpGeOFltGQvJIu34Y1W-vLkum81u-miW_FkDA/exec",
+      "https://script.google.com/macros/s/AKfycbzgstc4_mO3FBVI-iKUiIE0G5e4_opPRwV5pHU9YNxAuPTJDeWxnKZL2_Sh6ejFkUOu/exec",
       {
         method: "POST",
-        body: formData
+        body: formData,
+        mode: "no-cors"
       }
     );
 
-    const result = (await response.text()).trim();
+    alert("Booking sent! Please wait for confirmation.");
 
-    if (result === "success") {
-      alert("Payment received! Booking pending confirmation.");
-      document.getElementById("bookingForm").reset();
-      document.getElementById("paymentSection").style.display = "none";
-    } else {
-      alert("Server says: " + result);
-    }
+    document.getElementById("bookingForm").reset();
+    document.getElementById("paymentSection").style.display = "none";
 
   } catch (err) {
     console.error(err);
