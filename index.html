@@ -691,12 +691,14 @@ async function submitBooking(event) {
 
     const result = (await response.text()).trim();
 
-    if (result === "success") {
+    console.log("SERVER RESPONSE:", result);
+
+if (result === "success") {
       alert("Payment received! Booking pending confirmation.");
       document.getElementById("bookingForm").reset();
       document.getElementById("paymentSection").style.display = "none";
     } else {
-      alert("Error submitting booking.");
+      alert("Server says: " + result);
     }
   } catch (err) {
     console.error(err);
