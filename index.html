@@ -506,23 +506,6 @@ async function getBookedDates() {
   return booked;
 }
 
-    if (line.startsWith("DTEND") && start) {
-      const d = line.split(":")[1].trim();
-      const end = new Date(
-        d.substring(0, 4),
-        d.substring(4, 6) - 1,
-        d.substring(6, 8)
-      );
-
-      let current = new Date(start);
-
-      while (current < end) {
-        dates.push(current.toISOString().split("T")[0]);
-        current.setDate(current.getDate() + 1);
-      }
-    }
-  });
-
   return dates;
 }
 
@@ -713,13 +696,15 @@ async function submitBooking(event) {
 /* =========================
    LIVE EVENT TRIGGERS
 ========================= */
-document.getElementById("checkin").addEventListener("change", calculatePrice);
-document.getElementById("checkout").addEventListener("change", calculatePrice);
-document.getElementById("guests").addEventListener("change", calculatePrice);
+  window.addEventListener("load", () => {
+  document.getElementById("checkin").addEventListener("change", calculatePrice);
+  document.getElementById("checkout").addEventListener("change", calculatePrice);
+  document.getElementById("guests").addEventListener("change", calculatePrice);
+});
 
 /* =========================
    START APP
 ========================= */
-initCalendar();
+window.addEventListener("load", initCalendar);
 </script></body>
 </html>
