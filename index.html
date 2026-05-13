@@ -498,26 +498,13 @@ let bookedDatesGlobal = [];
    GET BOOKED DATES (ICS)
 ========================= */
 async function getBookedDates() {
-  const url =
-    "https://api.allorigins.win/raw?url=https://calendar.google.com/calendar/ical/mikesaccommodations%40gmail.com/public/basic.ics";
+  const url = "https://script.google.com/macros/s/AKfycbxU4WM2L8vQ2yJm0OdMEjOMHbkF66-L6vpGeOFltGQvJIu34Y1W-vLkum81u-miW_FkDA/exec";
 
   const response = await fetch(url);
-  const text = await response.text();
+  const booked = await response.json();
 
-  const dates = [];
-  const lines = text.split("\n");
-
-  let start = null;
-
-  lines.forEach(line => {
-    if (line.startsWith("DTSTART")) {
-      const d = line.split(":")[1].trim();
-      start = new Date(
-        d.substring(0, 4),
-        d.substring(4, 6) - 1,
-        d.substring(6, 8)
-      );
-    }
+  return booked;
+}
 
     if (line.startsWith("DTEND") && start) {
       const d = line.split(":")[1].trim();
