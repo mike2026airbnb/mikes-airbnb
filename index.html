@@ -678,7 +678,21 @@ async function submitBooking(event) {
   formData.append("checkout", document.getElementById("checkout").value);
   formData.append("guests", document.getElementById("guests").value);
   formData.append("total", document.getElementById("summaryTotal").innerText);
-  //formData.append("proof", proof);
+
+  const reader = new FileReader();
+
+  reader.onloadend = function () {
+    const base64 = reader.result;
+
+    formData.append("proof", base64);
+
+    sendToServer(formData);
+  };
+
+  reader.readAsDataURL(proof);
+}
+  async function sendToServer(formData) {
+  const btn = document.getElementById("payBtn");
 
   try {
     const response = await fetch(
@@ -691,15 +705,14 @@ async function submitBooking(event) {
 
     const result = (await response.text()).trim();
 
-    console.log("SERVER RESPONSE:", result);
-
-if (result === "success") {
+    if (result === "success") {
       alert("Payment received! Booking pending confirmation.");
       document.getElementById("bookingForm").reset();
       document.getElementById("paymentSection").style.display = "none";
     } else {
       alert("Server says: " + result);
     }
+
   } catch (err) {
     console.error(err);
     alert("Error: " + err.message);
@@ -708,7 +721,6 @@ if (result === "success") {
   btn.innerText = "I Have Paid";
   btn.disabled = false;
 }
-
 /* =========================
    LIVE EVENT TRIGGERS
 ========================= */
